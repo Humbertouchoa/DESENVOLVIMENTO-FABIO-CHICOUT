@@ -1,0 +1,34 @@
+package com.produtocsv2
+
+import com.opencsv.CSVWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class EscritaCSVProdutos {
+    public static void main(String[] args) {
+        String arquivoCSV = "produtos.csv";
+
+        try (CSVWriter writer = new CSVWriter(new FileWriter(arquivoCSV, true))) {
+            Scanner scanner = new Scanner(System.in);
+
+            // Solicitar detalhes dos produtos
+            System.out.println("Adicionar novo produto:");
+            System.out.print("Nome: ");
+            String nome = scanner.nextLine();
+            System.out.print("Preço: ");
+            String precoStr = scanner.nextLine();
+            double preco = Double.parseDouble(precoStr);
+            System.out.print("Quantidade: ");
+            String quantidadeStr = scanner.nextLine();
+            int quantidade = Integer.parseInt(quantidadeStr);
+
+            // Escrever detalhes no arquivo CSV
+            String[] linha = {nome, precoStr, quantidadeStr};
+            writer.writeNext(linha);
+            System.out.println("Produto adicionado com sucesso ao arquivo CSV.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
