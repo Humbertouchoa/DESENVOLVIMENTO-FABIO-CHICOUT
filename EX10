@@ -1,0 +1,60 @@
+package com.concatenado
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+
+public class concatenado {
+    public static void main(String[] args) {
+        String arq1 = "arq1.txt";
+        String arq2 = "arq2.txt";
+        String arqConc = "arqconc.txt";
+
+        criararq(arq1, " arquivo 1...");
+        criararq(arq2, " arquivo 2...");
+
+        concarq(arq1, arq2, arqConc);
+
+        System.out.println("Arquivos concatenados em: " + arqConc);
+    }
+
+    private static void concarq(String arq1, String arq2, String arqConc) {
+        
+        throw new UnsupportedOperationException("Unimplemented method 'concarq'");
+    }
+
+    private static void criararq(String arq1, String string) {
+       
+        throw new UnsupportedOperationException("Unimplemented method 'criararq'");
+    }
+
+    private static void criararquivo(String nomearq, String conteudo) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomearq))) {
+            writer.write(conteudo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void concatenararquivos(String arq1, String arq2, String arqConca) {
+        String arqconc;
+        try (BufferedReader reader1 = new BufferedReader(new FileReader(arq1));
+             BufferedReader reader2 = new BufferedReader(new FileReader(arq2));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(arqconc))) {
+
+            String linha;
+            while ((linha = reader1.readLine()) != null) {
+                writer.write(linha);
+                writer.newLine();
+            }
+
+            while ((linha = reader2.readLine()) != null) {
+                writer.write(linha);
+                writer.newLine();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
