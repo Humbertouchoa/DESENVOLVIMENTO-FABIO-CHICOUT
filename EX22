@@ -1,0 +1,70 @@
+package com.produtocsv3
+
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class AtualizacaoCSVProdutos {
+    public static void main(String[] args) {
+        String arquivoCSV = "produtos.csv";
+
+        try (CSVReader reader = new CSVReader(new FileReader(arquivoCSV));
+             CSVWriter writer = new CSVWriter(new FileWriter("temporario.csv"))) {
+            
+            Scanner scanner = new Scanner(System.in);
+            List<String[]> linhas = reader.readAll();
+            List<Produto> produtos = new ArrayList<>();
+
+            // Ler produtos do arquivo CSV
+            for (String[] linha : linhas) {
+                Produto produto = new Produto(linha[0], Double.parseDouble(linha[1]), Integer.parseInt(linha[2]));
+                produtos.add(produto);
+            }
+
+            // Exibir produtos ao usuário
+            System.out.println("Lista de produtos:");
+            for (int i = 0; i < produtos.size(); i++) {
+                System.out.println((i + 1) + ". " + produtos.get(i));
+            }
+
+            // Solicitar escolha do usuário
+            System.out.print("Digite o número do produto que deseja atualizar: ");
+            int escolha = Integer.parseInt(scanner.nextLine()) - 1;
+
+            if (escolha >= 0 && escolha < produtos.size()) {
+                Produto produtoSelecionado = produtos.get(escolha);
+                System.out.println("Produto selecionado: " + produtoSelecionado);
+
+                // Solicitar novos detalhes do produto
+                System.out.println("Atualize as informações do produto:");
+                System.out.print("Novo nome: ");
+                String novoNome = scanner.nextLine();
+                System.out.print("Novo preço: ");
+                double novoPreco = Double.parseDouble(scanner.nextLine());
+                System.out.print("Nova quantidade: ");
+                int novaQuantidade = Integer.parseInt(scanner.nextLine());
+
+                // Atualizar produto
+                produtoSelecionado.setNome(novoNome);
+                produtoSelecionado.setPreco(novoPreco);
+                produtoSelecionado.setQuantidade(novaQuantidade);
+
+                // Escrever produtos atualizados no arquivo temporário
+                for (Produto produto : produtos) {
+                    writer.writeNext(new String[]{produto.getNome(), String.valueOf(produto.getPreco()), String.valueOf(produto.getQuantidade())});
+                }
+
+                System.out.println("Produto atualizado com sucesso.");
+            } else {
+                System.out.println("Escolha inválida.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
