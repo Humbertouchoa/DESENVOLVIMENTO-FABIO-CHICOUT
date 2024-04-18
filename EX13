@@ -1,0 +1,47 @@
+package com.serialize
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
+class Produto implements Serializable {
+    String nome;
+    double preco;
+
+    public Produto(String nome, double preco) {
+        this.nome = nome;
+        this.preco = preco;
+    }
+
+    public String toString() {
+        return "Produto [nome=" + nome + ", preco=" + preco + "]";
+    }
+}
+
+public class SerializacaoProdutos {
+    public static void main(String[] args) {
+        List<Produto> produtos = new ArrayList<>();
+        produtos.add(new Produto("Camiseta", 29.99));
+        produtos.add(new Produto("Calça", 49.99));
+        produtos.add(new Produto("Tênis", 99.99));
+
+        // Serialização
+        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("produtos.dat"))) {
+            outputStream.writeObject(produtos);
+            System.out.println("Lista de produtos serializada com sucesso.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Desserialização
+        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("produtos.dat"))) {
+            List<Produto> produtosDesserializados = (List<Produto>) inputStream.readObject();
+            System.out.println("Produtos desserializados:");
+            for (Produto produto : produtosDesserializados) {
+                System.out.println(produto);
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+}
