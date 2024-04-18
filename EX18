@@ -1,0 +1,25 @@
+package com.alunocvc
+
+import java.io.FileReader;
+import java.io.IOException;
+
+public class LeituraCSV {
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
+        String arquivoCSV = "alunos.csv";
+
+        try (CSVReader reader = new CSVReader(new FileReader(arquivoCSV))) {
+            String[] linha;
+            while ((linha = reader.readNext()) != null) {
+                for (String dado : linha) {
+                    System.out.print(dado + " ");
+                }
+                System.out.println();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
