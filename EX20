@@ -1,0 +1,31 @@
+package com.produtocsv
+
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.List;
+import java.util.ArrayList;
+
+public class LeituraCSVProdutos {
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
+        String arquivoCSV = "produtos.csv";
+        List<Produto> produtos = new ArrayList<>();
+
+        try (CSVReader reader = new CSVReader(new FileReader(arquivoCSV))) {
+            reader.readNext(); // Ignorar o cabeçalho
+
+            String[] linha;
+            while ((linha = reader.readNext()) != null) {
+                Produto produto = new Produto(linha[0], Double.parseDouble(linha[1]), Integer.parseInt(linha[2]));
+                produtos.add(produto);
+            }
+
+            // Exibir os detalhes dos produtos
+            produtos.forEach(System.out::println);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
