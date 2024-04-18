@@ -1,0 +1,22 @@
+package com.arqordn;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.List;
+
+public class OrdArq {
+    public static void main(String[] args) {
+        String arqent = "meuarquivo.txt";
+        String arqsai = "arqordenado.txt";
+
+        try {
+            List<String> lin = Files.readAllLines(Paths.get(arqent));
+            Collections.sort(lin);
+            Files.write(Paths.get(arqsai), lin);
+            System.out.println("Arquivo criado com sucesso: " + arqsai);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
