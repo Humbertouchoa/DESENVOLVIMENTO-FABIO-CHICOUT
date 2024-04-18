@@ -1,0 +1,53 @@
+package com.conta
+
+import java.io.*;
+
+class ContaBancaria implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private String titular;
+    private double saldo;
+
+    public ContaBancaria(String titular, double saldo) {
+        this.titular = titular;
+        this.saldo = saldo;
+    }
+
+    public void depositar(double valor) {
+        saldo += valor;
+    }
+
+    public void sacar(double valor) {
+        saldo -= valor;
+    }
+
+    public double getSaldo() {
+        return saldo;
+    }
+}
+
+public class AtualizacaoConta {
+    public static void main(String[] args) {
+        // Desserialização
+        ContaBancaria conta = null;
+        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("conta.dat"))) {
+            conta = (ContaBancaria) inputStream.readObject();
+            System.out.println("Conta bancária carregada com sucesso.");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        // Atualização do saldo
+        if (conta != null) {
+            conta.depositar(100); // Por exemplo, adicionando 100 ao saldo
+
+            // Serialização do objeto atualizado
+            try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("conta.dat"))) {
+                outputStream.writeObject(conta);
+                System.out.println("Saldo atualizado e objeto serializado com sucesso.");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
