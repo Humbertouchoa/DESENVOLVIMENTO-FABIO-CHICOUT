@@ -1,0 +1,40 @@
+package com.pessoa
+
+import java.io.*;
+
+class Pessoa implements Serializable {
+    String nome;
+    int idade;
+
+    public Pessoa(String nome, int idade) {
+        this.nome = nome;
+        this.idade = idade;
+    }
+
+    public String toString() {
+        return "Nome: " + nome + ", Idade: " + idade;
+    }
+}
+
+public class SerializacaoPessoa {
+    public static void main(String[] args) {
+        // Serialização
+        Pessoa pessoa = new Pessoa("João", 30);
+
+        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("pessoa.dat"))) {
+            outputStream.writeObject(pessoa);
+            System.out.println("Objeto Pessoa serializado com sucesso.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Desserialização
+        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("pessoa.dat"))) {
+            Pessoa pessoaDesserializada = (Pessoa) inputStream.readObject();
+            System.out.println("Detalhes da Pessoa desserializada:");
+            System.out.println(pessoaDesserializada);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+}
