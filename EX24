@@ -1,0 +1,94 @@
+package com.open
+
+import com.opencsv.CSVReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class FiltragemFuncionarios {
+    public static void main(String[] args) {
+        String arquivoCSV = "funcionarios.csv";
+
+        try (CSVReader reader = new CSVReader(new FileReader(arquivoCSV))) {
+            Scanner scanner = new Scanner(System.in);
+
+            // Ignorar o cabeçalho
+            reader.readNext();
+
+            // Ler as linhas do arquivo e armazenar em uma lista de funcionários
+            List<Funcionario> funcionarios = new ArrayList<>();
+            String[] linha;
+            while ((linha = reader.readNext()) != null) {
+                String nome = linha[0];
+                String cargo = linha[1];
+                double salario = Double.parseDouble(linha[2]);
+                Funcionario funcionario = new Funcionario(nome, cargo, salario);
+                funcionarios.add(funcionario);
+            }
+
+            // Exibir opções de filtro para o usuário
+            System.out.println("Opções de filtro:");
+            System.out.println("1. Filtrar por cargo");
+            System.out.println("2. Filtrar por salário mínimo");
+            System.out.print("Escolha uma opção: ");
+            int opcao = scanner.nextInt();
+            scanner.nextLine(); // Consumir a quebra de linha
+
+            // Filtrar funcionários com base na opção escolhida pelo usuário
+            if (opcao == 1) {
+                System.out.print("Digite o cargo para filtrar: ");
+                String cargoFiltro = scanner.nextLine();
+                System.out.println("Funcionários com cargo de " + cargoFiltro + ":");
+                for (Funcionario funcionario : funcionarios) {
+                    if (funcionario.getCargo().equalsIgnoreCase(cargoFiltro)) {
+                        System.out.println(funcionario);
+                    }
+                }
+            } else if (opcao == 2) {
+                System.out.print("Digite o salário mínimo para filtrar: ");
+                double salarioMinimo = scanner.nextDouble();
+                System.out.println("Funcionários com salário igual ou superior a R$" + salarioMinimo + ":");
+                for (Funcionario funcionario : funcionarios) {
+                    if (funcionario.getSalario() >= salarioMinimo) {
+                        System.out.println(funcionario);
+                    }
+                }
+            } else {
+                System.out.println("Opção inválida.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+class Funcionario {
+    private String nome;
+    private String cargo;
+    private double salario;
+
+    public Funcionario(String nome, String cargo, double salario) {
+        this.nome = nome;
+        this.cargo = cargo;
+        this.salario = salario;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    public double getSalario() {
+        return salario;
+    }
+
+    @Override
+    public String toString() {
+        return "Nome: " + nome + ", Cargo: " + cargo + ", Salário: R$" + salario;
+    }
+}
