@@ -1,0 +1,40 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class ReplaceText {
+    public static void main(String[] args) {
+        // Nome do arquivo de entrada
+        String inputFile = "meuarquivo.txt";
+        // Nome do arquivo de saída
+        String outputFile = "meuarquivo_python.txt";
+
+        try {
+            // Cria um scanner para ler o arquivo de entrada
+            Scanner scanner = new Scanner(new File(inputFile));
+            // Cria um escritor para escrever no arquivo de saída
+            FileWriter writer = new FileWriter(outputFile);
+
+            // Lê o conteúdo do arquivo de entrada linha por linha
+            while (scanner.hasNextLine()) {
+                // Lê uma linha
+                String line = scanner.nextLine();
+                // Substitui todas as ocorrências de "Java" por "Python" na linha
+                line = line.replaceAll("Java", "Python");
+                // Escreve a linha modificada no arquivo de saída
+                writer.write(line + "\n");
+            }
+
+            // Fecha os recursos
+            scanner.close();
+            writer.close();
+            
+            System.out.println("Substituição concluída com sucesso.");
+
+        } catch (IOException e) {
+            System.err.println("Erro ao ler/escrever o arquivo: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+}
