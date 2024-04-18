@@ -1,0 +1,28 @@
+package com.lerarq;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class dadosCSV {
+    public static void main(String[] args) {
+        String arqCSV = "dados.csv";
+
+        try (BufferedReader br = new BufferedReader(new FileReader(arqCSV))) {
+            String lin;
+            while ((lin = br.readLine()) != null) {
+               
+                String[] camp = lin.split(",");
+                
+            
+                for (String cam : camp) {
+                    System.out.print(cam + " ");
+                }
+                System.out.println(); 
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
