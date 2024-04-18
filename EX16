@@ -1,0 +1,21 @@
+import java.io.*;
+
+public class LeituraPrimeirosBytes {
+    public static void main(String[] args) {
+        String nomeArquivo = "arquivo.bin";
+
+        try (InputStream in = new FileInputStream(nomeArquivo)) {
+            for (int i = 0; i < 100; i++) {
+                int byteLido = in.read();
+                if (byteLido != -1) {
+                    System.out.printf("%02X ", byteLido);
+                } else {
+                    System.out.println("O arquivo não contém 100 bytes.");
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
