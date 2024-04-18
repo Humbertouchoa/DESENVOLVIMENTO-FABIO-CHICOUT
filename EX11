@@ -1,0 +1,29 @@
+package com.objeto
+
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
+class Pessoa implements Serializable {
+    String nome;
+    int idade;
+
+    public Pessoa(String nome, int idade) {
+        this.nome = nome;
+        this.idade = idade;
+    }
+}
+
+public class SerializacaoPessoa {
+    public static void main(String[] args) {
+        Pessoa pessoa = new Pessoa("João", 30);
+
+        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("pessoa.dat"))) {
+            outputStream.writeObject(pessoa);
+            System.out.println("Objeto Pessoa serializado com sucesso.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
