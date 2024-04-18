@@ -1,0 +1,30 @@
+package com.implem;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+
+public class excluir {
+    public static void main(String[] args) {
+        String arqent = "arq.txt";
+        String arqsai = "arqsexcl.txt";
+
+        try (BufferedReader are = new BufferedReader(new FileReader(arqent));
+             BufferedWriter ars = new BufferedWriter(new FileWriter(arqsai))) {
+
+            String linha;
+            while ((linha = are.readLine()) != null) {
+                if (!linha.contains("excluir")) {
+                    ars.write(linha);
+                    ars.newLine();
+                }
+            }
+
+            System.out.println("Linhas contendo 'excluir' removidas.novo arquivo feito com sucesso : " + arqsai);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
