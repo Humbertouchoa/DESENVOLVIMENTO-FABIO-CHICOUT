@@ -1,0 +1,94 @@
+package com.bytes
+
+import java.io.*;
+import java.util.Scanner;
+
+class Funcionario implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private int id;
+    private String nome;
+    private String cargo;
+    private double salario;
+
+    public Funcionario(int id, String nome, String cargo, double salario) {
+        this.id = id;
+        this.nome = nome;
+        this.cargo = cargo;
+        this.salario = salario;
+    }
+
+    public String toString() {
+        return "ID: " + id + ", Nome: " + nome + ", Cargo: " + cargo + ", Salário: " + salario;
+    }
+}
+
+public class GerenciadorArquivoFuncionarios {
+    private static final String ARQUIVO_FUNCIONARIOS = "funcionarios.bin";
+
+    public static void main(String[] args) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            while (true) {
+                System.out.println("\nMenu:");
+                System.out.println("1. Adicionar funcionário");
+                System.out.println("2. Visualizar todos os funcionários");
+                System.out.println("3. Sair");
+                System.out.print("Escolha uma opção: ");
+                int opcao = scanner.nextInt();
+                scanner.nextLine(); // Consumir a quebra de linha
+
+                switch (opcao) {
+                    case 1:
+                        adicionarFuncionario();
+                        break;
+                    case 2:
+                        visualizarFuncionarios();
+                        break;
+                    case 3:
+                        System.out.println("Encerrando o programa...");
+                        return;
+                    default:
+                        System.out.println("Opção inválida. Tente novamente.");
+                }
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void adicionarFuncionario() throws IOException, ClassNotFoundException {
+        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(ARQUIVO_FUNCIONARIOS, true))) {
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("ID do funcionário: ");
+            int id = scanner.nextInt();
+            scanner.nextLine(); // Consumir a quebra de linha
+            System.out.print("Nome do funcionário: ");
+            String nome = scanner.nextLine();
+            System.out.print("Cargo do funcionário: ");
+            String cargo = scanner.nextLine();
+            System.out.print("Salário do funcionário: ");
+            double salario = scanner.nextDouble();
+
+            Funcionario funcionario = new Funcionario(id, nome, cargo, salario);
+            outputStream.writeObject(funcionario);
+            System.out.println("Funcionário adicionado com sucesso.");
+        }
+    }
+
+    private static void visualizarFuncionarios() throws IOException, ClassNotFoundException {
+        File arquivo = new File(ARQUIVO_FUNCIONARIOS);
+        if (!arquivo.exists()) {
+            System.out.println("O arquivo de funcionários está vazio.");
+            return;
+        }
+
+        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(ARQUIVO_FUNCIONARIOS))) {
+            System.out.println("Lista de funcionários:");
+            while (true) {
+                Funcionario funcionario = (Funcionario) inputStream.readObject();
+                if (funcionario == null) break;
+                System.out.println(funcionario);
+            }
+        }
+    }
+}
+
